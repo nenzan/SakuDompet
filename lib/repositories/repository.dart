@@ -35,4 +35,10 @@ class Repository {
     var connection = await database;
     return await connection.query(table, where: 'id=?', whereArgs: [itemId]);
   }
+
+  // udpate data tabel
+  updateData(table, data) async {
+    var connection = await database;
+    return await connection.update(table, data, where: 'id=?', whereArgs: [data['id']]);
+  }
 }

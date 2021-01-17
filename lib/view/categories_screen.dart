@@ -21,6 +21,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   var _category = Category();
   var _categoryService = CategoryService();
 
+  // ignore: deprecated_member_use
   List<Category> _categoryList = List<Category>();
 
   @override
@@ -29,7 +30,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     getAllCategories();
   }
 
+  final GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
+
   getAllCategories() async {
+    // ignore: deprecated_member_use
     _categoryList = List<Category>();
     var categories = await _categoryService.readCategories();
     categories.forEach((category) {
@@ -69,10 +73,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 onPressed: () async {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
+
                   var result = await _categoryService.saveCategory(_category);
                   if (result > 0) {
                     print(result);
                     Navigator.pop(context);
+                    getAllCategories();
                   }
                 },
                 child: Text('Save'),
@@ -118,12 +124,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               FlatButton(
                 onPressed: () async {
-                  _category.name = _categoryNameController.text;
-                  _category.description = _categoryDescriptionController.text;
-                  var result = await _categoryService.saveCategory(_category);
+                  _category.id  = category[0]['id'];
+                  _category.name = _editCategoryNameController.text;
+                  _category.description = _editCategoryDescriptionController.text;
+                  var result = await _categoryService.updateCategory(_category);
                   if (result > 0) {
-                    print(result);
                     Navigator.pop(context);
+                    getAllCategories();
+                    _showSuccessSnackBar(Text("Updated"));
                   }
                 },
                 child: Text('Update'),
@@ -155,9 +163,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         });
   }
 
+  _showSuccessSnackBar(message){
+    var _snackBar = SnackBar(content: message);
+    // ignore: deprecated_member_use
+    _globalKey.currentState.showSnackBar(_snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
         leading: RaisedButton(
           onPressed: () => Navigator.of(context)
