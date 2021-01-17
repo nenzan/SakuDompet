@@ -9,7 +9,6 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
-
   var _categoryNameController = TextEditingController();
   var _categoryDescriptionController = TextEditingController();
 
@@ -29,10 +28,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 color: Colors.red,
               ),
               FlatButton(
-                onPressed: () {
+                onPressed: () async {
                   _category.name = _categoryNameController.text;
                   _category.description = _categoryDescriptionController.text;
-                  _categoryService.saveCategory(_category);
+                  var result = await _categoryService.saveCategory(_category);
+                  print(result);
                 },
                 child: Text('Save'),
                 color: Colors.green,

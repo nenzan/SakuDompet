@@ -1,8 +1,14 @@
 import 'package:saku_dompet/model/Category.dart';
+import 'package:saku_dompet/repositories/repository.dart';
 
-class CategoryService{
-  saveCategory(Category category){
-    print(category.name);
-    print(category.description);
+class CategoryService {
+  Repository _repository;
+
+  CategoryService() {
+    _repository = Repository();
+  }
+
+  saveCategory(Category category) async {
+    return await _repository.insertData('categories', category.categoryMap());
   }
 }
