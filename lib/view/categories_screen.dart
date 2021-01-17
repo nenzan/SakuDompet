@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:saku_dompet/model/Category.dart';
+import 'package:saku_dompet/service/category_service.dart';
 import 'package:saku_dompet/view/home_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
@@ -10,6 +12,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   var _categoryNameController = TextEditingController();
   var _categoryDescriptionController = TextEditingController();
+
+  var _category = Category();
+  var _categoryService = CategoryService();
 
   _showFormDialog(BuildContext context) {
     return showDialog(
@@ -25,8 +30,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               FlatButton(
                 onPressed: () {
-                  print('Category: ${_categoryNameController.text}');
-                  print('Description: ${_categoryDescriptionController.text}');
+                  _category.name = _categoryNameController.text;
+                  _category.description = _categoryDescriptionController.text;
+                  _categoryService.saveCategory(_category);
                 },
                 child: Text('Save'),
                 color: Colors.green,
@@ -38,14 +44,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 children: <Widget>[
                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Input Categories',
+                      hintText: 'Write a category',
                       labelText: 'Category',
                     ),
                     controller: _categoryNameController,
                   ),
                   TextField(
                     decoration: InputDecoration(
-                      hintText: 'Input Description',
+                      hintText: 'Write a description',
                       labelText: 'Description',
                     ),
                     controller: _categoryDescriptionController,
